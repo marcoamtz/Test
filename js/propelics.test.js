@@ -42,6 +42,7 @@ var propelics ={
         },
     //Test 4.
         groupValueType: function (object) {
+            'use strict';
             var propType,
                 propValue,
                 arr = [{}, {}, {}];
@@ -67,58 +68,59 @@ var propelics ={
     //Test 5.
         calculator: function (string) {
             'use strict';
-            var operator,
-                begin = 0,
-                end = 0,
+            var begin,
+                end,
+                operator,
                 result = 0,
-                strLength = string.length,
-                //function that makes the operation
-                fnOperation = function () {
-                    end = i;
-                    var strNumber = string.slice(begin, end),
-                        number = parseFloat(strNumber);
-                    begin = end +1;
-                    if (operator) {
-                        result = operations[operator](result, number);
-                    } else {
-                        result += number;
-                    }
-                },
                 //object with the operations
                 operations = {
                     '+': function (x, y) { return x + y; },
                     '-': function (x, y) { return x - y; },
                     '*': function (x, y) { return x * y; },
                     '/': function (x, y) { return x / y; }
+                },
+                //function that makes the operation
+                fnOperation = function (operParam) {
+                    //sets the end on the slice method based on index
+                    end = i;
+                    //extract the number from the string
+                    var strNumber = string.slice(begin, end),
+                        number = parseFloat(strNumber);
+                    if (operator) {
+                        //if there is an operator makes the operation
+                        result = operations[operator](result, number);
+                    } else {
+                        //if not appends the number to the result
+                        result += number;
+                    }
+                    if (operParam) {
+                        //set the new begin after extracts the number
+                        begin = end + 1;
+                        //sets the operator used in the next call
+                        operator = operParam;
+                    }
                 };
             //checks if character is ann operation symbol
             //or is the last one in the string
-            for (var i = 0, char; i <= strLength; i++) {
+            for (var i = 0, strLength = string.length, char; i <= strLength; i++) {
                 char = string[i];
-                if (char === '+') {
-                    fnOperation();
-                    operator = '+';
-                } else if (char === '-') {
-                    fnOperation();
-                    operator = '-';
-                } else if (char === '*') {
-                    fnOperation();
-                    operator = '*';
-                } else if (char === '/') {
-                    fnOperation();
-                    operator = '/';
+                switch (char) {
+                    case '+':
+                    case '-':
+                    case '*':
+                    case '/':
+                        fnOperation(char);
+                        break;
                 }
                 if (i === strLength) {
-                    end = i;
-                    var strNumber = string.slice(begin, end),
-                        number = parseFloat(strNumber);
-                    result = operations[operator](result, number);
+                    fnOperation();
                 }
             }
             return result;
         },
     //Test 6.
         arrTranspose: function(matrix) {
+            'use strict';
             //get the matrix dimensions
             var outerLength = matrix.length || 0,
                 innerLength = matrix[0].length || 0,
@@ -142,6 +144,7 @@ var propelics ={
         },
     //Test 7.
         compareStrings: function (string1, string2) {
+            'use strict';
             var str1Length = string1.length,
                 str2Length = string2.length,
                 arrChars = [];
@@ -159,6 +162,7 @@ var propelics ={
         },
     //Test 8.
         functionName: function () {
+            'use strict';
             //it returns a number
             return 0;
         },
@@ -168,18 +172,20 @@ var propelics ={
 
 //Test 9.
 
-//Function Expression example:
-var paramTypeof1 = function (param) {
-    return typeof param;
-};
+    //Function Expression example:
+    var paramTypeof1 = function (param) {
+        'use strict';
+        return typeof param;
+    };
 
-//Function Declaration example:
-function paramTypeof2 (param) {
-    return typeof param;
-}
+    //Function Declaration example:
+    function paramTypeof2 (param) {
+        'use strict';
+        return typeof param;
+    }
 
 //Test 10.
 
-/*I prefer to use function expressions in my code because function declarations are hoisted to the top of the scope
-making them available in it entirely no matter where it was declared, that includes if statements where the function
-declaration will be created whether the condition is true or not, and that includes any other block statement.*/
+    /* I prefer to use function expressions in my code because function declarations are hoisted to the top of the scope
+    making them available in it entirely no matter where it was declared, that includes if statements where the function
+    declaration will be created whether the condition is true or not, and that includes any other block statement. */
